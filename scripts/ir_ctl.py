@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Executes actions based on inputs from IR remote and GPIO
 
 import sys
@@ -8,6 +8,11 @@ import uinput
 import subprocess, os
 import signal
 import rpi_backlight as bl
+
+# Check for python3 (pijuice >= 1.4 requires Python3)
+if sys.version_info < (3, 0):
+    sys.stfout.write("This script requires Python 3.x to work.")
+    sys.exti(1)
 
 class IrCtl:
     def __init__(self):
@@ -49,12 +54,12 @@ class IrCtl:
     def startCamera(self):
         if self.is_cam_running is False:
             try:
-                print "Switching camera On"
+                print("Switching camera On")
                 #self.stream_process = subprocess.Popen(self.stream_cmd, shell=True, preexec_fn=os.setsid)
                 #print "Stream launched"
                 #time.sleep(0.5)
                 self.player_process = subprocess.Popen(self.player_cmd, shell=True, preexec_fn=os.setsid)
-                print "Player launched"
+                print("Player launched")
                 self.is_cam_running = True
             except:
                 pass
@@ -78,7 +83,7 @@ class IrCtl:
                 #time.sleep(0.5)
                 #os.killpg(os.getpgid(self.stream_process.pid), signal.SIGKILL)
                 self.is_cam_running = False
-                print "Stopping camera"
+                print("Stopping camera")
             except:
                 pass
 
@@ -115,12 +120,12 @@ class IrCtl:
             else:
                 bl.set_power(True)
         elif cmd == 'toggleCamera':
-            print "Camera is " + ("running" if self.is_cam_running else "not running")
+            print("Camera is " + ("running" if self.is_cam_running else "not running"))
             if self.is_cam_running:
-                print "Stop camera"
+                print("Stop camera")
                 self.stopCamera()
             else:
-                print "Start camera"
+                print("Start camera")
                 self.startCamera()
 
 irctl = IrCtl()
@@ -129,24 +134,24 @@ irctl = IrCtl()
 PORT = 8888
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-print 'Socket created'
+print('Socket created')
 
 # Binding socket
 try:
     s.bind(('', PORT))
 except socket.error as msg:
-    print 'Bind failed. Error code: ' + str(msg[0]) + ' Message:' + msg[1]
+    print('Bind failed. Error code: ' + str(msg[0]) + ' Message:' + msg[1])
     sys.exit()
 
-print 'Socket bind complete'
+print('Socket bind complete')
 s.listen(10)
-print 'Socket now listening'
+print('Socket now listening')
 
 while True:
     try:
         conn, addr = s.accept()
         cmd = conn.recv(64).rstrip()
-        print 'Received command: "' + cmd + '"'
+        print('Received command: "' + cmd + '"')
         irctl.handleCommand(cmd)
     except KeyboardInterrupt:
         irctl.stopCamera()
