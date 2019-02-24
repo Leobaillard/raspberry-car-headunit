@@ -1,0 +1,167 @@
+#:import utils kivy.utils
+#:import icon kivy.garden.iconfonts.icon
+
+<BaseView>:
+    orientation: 'vertical'
+    ScreenManager:
+        id: 'screenmanager'
+        HomeScreen:
+    StatusBar:
+        size_hint: 1, 0.08
+        pos_hint: {'center_x': 0.5, 'top': 1}
+    ControlBar:
+        size_hint: 1, 0.12
+        pos_hint: {'center_x': 0.5, 'top': 0.12}
+
+<StatusBar>:
+    id: status_bar
+    orientation: 'horizontal'
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex('222222FF')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        id: 'status_left'
+        orientation: 'horizontal'
+        size: .3, 1
+        LabelButton:
+            id: volume_icon
+            markup: True
+            text: "%s"%(icon('fa-volume-off'))
+            font_size: 25
+            on_release: status_bar.volume_clicked()
+        LabelButton:
+            id: brightness_icon
+            markup: True
+            text: "%s"%(icon('fa-lightbulb-on'))
+            font_size: 25
+            on_release: status_bar.brightness_clicked()
+    BoxLayout:
+        id: 'status_center'
+        orientation: 'horizontal'
+        size: .3, 1
+        Label:
+            id: time
+            bold: True
+            font_size: 25
+    BoxLayout:
+        id: 'status_right'
+        orientation: 'horizontal'
+        size: .3, 1
+        BoxLayout:
+            Label:
+                id: temp
+                text: '12.3°C'
+                font_size: 25
+        BoxLayout:
+            Label:
+                id: bluetooth_icon
+                markup: True
+                text: "%s"%(icon('fa-mobile-alt'))
+                font_size: 25
+                color: utils.get_color_from_hex('444444FF')
+            Label:
+                id: cell_icon
+                markup: True
+                text: "%s"%(icon('fa-signal-slash'))
+                font_size: 25
+                color: utils.get_color_from_hex('444444FF')
+            Label:
+                id: batt_icon
+                markup: True
+                text: "%s"%(icon('fa-battery-slash'))
+                font_size: 25
+                color: utils.get_color_from_hex('444444FF')
+
+<ControlBar>:
+    id: control_bar
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex('373737FF')
+        Rectangle:
+            # self here refers to the widget i.e BoxLayout
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: utils.get_color_from_hex('464646FF')
+        Rectangle:
+            # self here refers to the widget i.e BoxLayout
+            pos: self.pos[0], self.pos[1]+self.height
+            size: self.width, self.height/80
+
+<HomeScreen>:
+    name: 'homeScreen'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 50
+            Label:
+                id: date_lbl
+                text: ''
+                font_size: 30
+            Label:
+                id: time_lbl
+                text: ''
+                font_size: 30
+
+<VolumePopup>:
+    id: volume_popup
+    RelativeLayout:
+        pos: self.parent.pos
+        size: self.parent.size[0]*0.8, self.parent.size[1]
+        LabelButton:
+            id: mute_btn
+            markup: True
+            text: "%s"%(icon('fa-volume'))
+            font_size: 25
+            height: self.parent.height*0.6
+            pos: (35 - self.parent.width*0.5), 0
+        Slider:
+            id: volume_slider
+            pos: 30, 0
+            size: 20, 20
+            value_track_color: utils.get_color_from_hex('A6CDE4FF')
+            value_track: True
+            padding: 50
+            value: volume_popup.current
+            min: volume_popup.min
+            max: volume_popup.max
+            step: 1
+
+<BrightnessPopup>:
+    id: brightness_popup
+    RelativeLayout:
+        pos: self.parent.pos
+        size: self.parent.size[0]*0.8, self.parent.size[1]
+        LabelButton:
+            id: mute_btn
+            markup: True
+            text: "%s"%(icon('fa-lightbulb'))
+            font_size: 25
+            height: self.parent.height*0.6
+            pos: (35 - self.parent.width*0.5), 0
+        Slider:
+            id: brightness_slider
+            pos: 30, 0
+            size: 20, 20
+            value_track_color: utils.get_color_from_hex('A6CDE4FF')
+            value_track: True
+            padding: 50
+            value: brightness_popup.current
+            min: brightness_popup.min
+            max: brightness_popup.max
+            step: 1
+
+<PopupBar>
+    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    size_hint: .8, 0.12
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex('333333FF')
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20,]

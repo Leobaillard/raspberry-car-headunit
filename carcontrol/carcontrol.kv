@@ -1,0 +1,23 @@
+AppScreenManager:
+    HomeScreen:
+    PlayerScreen:
+<HomeScreen>:
+    name: 'homeScreen'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Home screen'
+            font_size: 30
+        Button:
+            text: 'Music player'
+            on_release: app.root.current = 'playerScreen'
+
+<PlayerScreen>:
+    name: 'playerScreen'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Player screen'
+        Button:
+            text: 'Home'
+            on_release: app.root.current = 'homeScreen'
