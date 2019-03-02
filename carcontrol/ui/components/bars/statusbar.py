@@ -11,6 +11,7 @@ from ui.components.popups import VolumePopup, BrightnessPopup
 class StatusBar(BoxLayout):
     volume_icons = {
         'mute': 'fa-volume-mute',
+        'off': 'fa-volume-off',
         'low': 'fa-volume-down',
         'mid': 'fa-volume',
         'high': 'fa-volume-up'
@@ -19,6 +20,7 @@ class StatusBar(BoxLayout):
     def __init__(self, **kwargs):
         super(StatusBar, self).__init__(**kwargs)
         Clock.schedule_interval(self.on_tick, 1)
+        Clock.schedule_once(self.after_init, 0)
         self.app = App.get_running_app()
         Logger.info('Statusbar (' + str(self.parent) + '): Init')
 
@@ -26,6 +28,10 @@ class StatusBar(BoxLayout):
         self.app.volumeHandler.bind(on_volume_change=self.on_volume_change, on_mute_change=self.on_mute_change)
 
         self.activePopup = None
+
+    def after_init(self, dt):
+        # Set initial status
+        self.volume_update(self.app.volumeHandler.current)
 
     def volume_clicked(self):
         self.toggle_popup(VolumePopup,
@@ -54,16 +60,20 @@ class StatusBar(BoxLayout):
         self.ids.time.text = time.strftime('%H:%M')
 
     def on_volume_change(self, handler, *args):
-        value = handler.current
-        if 0 <= value < 60:
-            self.ids.volume_icon.text = icon(self.volume_icons['low'])
-        elif 60 <= value < 80:
-            self.ids.volume_icon.text = icon(self.volume_icons['mid'])
-        elif 80 <= value < 100:
-            self.ids.volume_icon.text = icon(self.volume_icons['high'])
+        self.volume_update(handler.current)
 
     def on_mute_change(self, status):
         if status:
             self.ids.volume_icon.text = icon(self.volume_icons['mute'])
         else:
             self.on_volume_change(self.app.volumeHandler.current)
+
+    def volume_update(self, value):
+        if 0 <= value < 20:
+            self.ids.volume_icon.text = icon(self.volume_icons['off'])
+        elif 20 <= value < 60:
+            self.ids.volume_icon.text = icon(self.volume_icons['low'])
+        elif 60 <= value < 80:
+            self.ids.volume_icon.text = icon(self.volume_icons['mid'])
+        elif 80 <= value < 100:
+            self.ids.volume_icon.text = icon(self.volume_icons['high'])
