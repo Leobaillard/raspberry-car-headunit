@@ -1,6 +1,8 @@
 from kivy.event import EventDispatcher
 from kivy.properties import DictProperty
 from kivy.logger import Logger
+from kivy.support import install_gobject_iteration
+
 import pydbus
 
 
@@ -11,6 +13,7 @@ class BluetoothHandler(EventDispatcher):
     modems = DictProperty()
 
     def __init__(self, dummy=False):
+        install_gobject_iteration()
         self.dummy = dummy
         bus = pydbus.SystemBus()
         self.bus = bus

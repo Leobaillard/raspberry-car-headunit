@@ -13,8 +13,9 @@ class UserInterface(App):
         # Init handlers
         self.brightnessHandler = BrightnessHandler(self.DUMMY)
         self.volumeHandler = VolumeHandler(self.DUMMY)
-        self.bluetoothhandler = BluetoothHandler(self.DUMMY)
-        self.a2dphandler = A2DPHandler(self.bluetoothhandler, self.DUMMY)
+        self.bluetoothHandler = BluetoothHandler(self.DUMMY)
+        self.hfpHandler = HFPHandler(self.bluetoothHandler, self.DUMMY)
+        self.a2dpHandler = A2DPHandler(self.bluetoothHandler, self.DUMMY)
 
     def build(self):
         return BaseView()

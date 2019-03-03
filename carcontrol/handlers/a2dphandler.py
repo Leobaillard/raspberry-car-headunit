@@ -23,6 +23,7 @@ class A2DPHandler(EventDispatcher):
         self.on_interfaces_changed(self, self.bluetooth.interfaces)
 
     def on_interfaces_changed(self, instance, value):
+        Logger.info('On interfaces change')
         if 'org.bluez.MediaPlayer1' in value:
             path = value['org.bluez.MediaPlayer1']
             try:
@@ -34,6 +35,7 @@ class A2DPHandler(EventDispatcher):
                 Logger.error('A2DP: Could not get player object')
         else:
             self.connected = False
+        Logger.info('A2DP connection status: {}'.format(self.connected))
 
     def get_properties(self):
         message = self.player.GetAll('org.bluez.MediaPlayer1')

@@ -1,5 +1,6 @@
 from kivy.app import App
 from popupbar import PopupBar
+from kivy.clock import Clock
 from kivy.properties import NumericProperty, BooleanProperty
 from kivy.logger import Logger
 
@@ -26,4 +27,8 @@ class VolumePopup(PopupBar):
 
     def on_volume_change(self, obj, touch):
         if obj.collide_point(*touch.pos):
+            # Reset display timer
+            self.reset_display_timer()
+
+            # Change volume setting
             self.app.volumeHandler.set_volume(obj.value)

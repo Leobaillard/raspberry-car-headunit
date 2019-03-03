@@ -46,15 +46,14 @@
             id: time
             bold: True
             font_size: 25
+        Label:
+            id: temp
+            text: '12.3°C'
+            font_size: 25
     BoxLayout:
         id: 'status_right'
         orientation: 'horizontal'
         size: .3, 1
-        BoxLayout:
-            Label:
-                id: temp
-                text: '12.3°C'
-                font_size: 25
         BoxLayout:
             Label:
                 id: bluetooth_icon
@@ -62,6 +61,10 @@
                 text: "%s"%(icon('fa-mobile-alt'))
                 font_size: 25
                 color: utils.get_color_from_hex('444444FF')
+            Label:
+                id: carrier
+                text: ''
+                font_size: 25
             Label:
                 id: cell_icon
                 markup: True

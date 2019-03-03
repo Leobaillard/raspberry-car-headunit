@@ -14,7 +14,8 @@ class HFPHandler(EventDispatcher):
     calls = ListProperty()
     attention = ListProperty()
 
-    def __init__(self, bluetooth):
+    def __init__(self, bluetooth, dummy=False):
+        self.dummy = dummy
         Logger.info('HFP: Loading hfp-module')
         bluetooth.bind(modems=self.on_modems_change)
         self.bluetooth = bluetooth
