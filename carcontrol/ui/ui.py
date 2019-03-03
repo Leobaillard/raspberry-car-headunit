@@ -1,7 +1,7 @@
 from kivy.app import App
 
 from components.baseview import BaseView
-from handlers import BrightnessHandler,VolumeHandler
+from handlers import BrightnessHandler,VolumeHandler, BluetoothHandler, HFPHandler, A2DPHandler
 
 
 class UserInterface(App):
@@ -13,6 +13,8 @@ class UserInterface(App):
         # Init handlers
         self.brightnessHandler = BrightnessHandler(self.DUMMY)
         self.volumeHandler = VolumeHandler(self.DUMMY)
+        self.bluetoothhandler = BluetoothHandler(self.DUMMY)
+        self.a2dphandler = A2DPHandler(self.bluetoothhandler, self.DUMMY)
 
     def build(self):
         return BaseView()

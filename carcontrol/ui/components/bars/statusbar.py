@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 import time
 from kivy.logger import Logger
+from kivy.utils import get_color_from_hex
 from kivy.garden.iconfonts import icon
 
 from ui.components.popups import VolumePopup, BrightnessPopup
@@ -26,6 +27,7 @@ class StatusBar(BoxLayout):
 
         # Bind events
         self.app.volumeHandler.bind(on_volume_change=self.on_volume_change, on_mute_change=self.on_mute_change)
+        self.app.a2dphandler.bind(connected=self.on_connected_change)
 
         self.activePopup = None
 
@@ -77,3 +79,10 @@ class StatusBar(BoxLayout):
             self.ids.volume_icon.text = icon(self.volume_icons['mid'])
         elif 80 <= value < 100:
             self.ids.volume_icon.text = icon(self.volume_icons['high'])
+
+    def on_connected_change(self, instance, value):
+        Logger.info('A2DP connected state changed: {}'.format(value))
+        if value:
+            self.ids.bluetooth_icon.color = get_color_from_hex('ffffffff')
+        else:
+            self.ids.bluetooth_icon.color = get_color_from_hex('444444ff')
