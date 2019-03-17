@@ -4,12 +4,17 @@
 <BaseView>:
     orientation: 'vertical'
     ScreenManager:
-        id: 'screenmanager'
-        HomeScreen:
+        id: screenmanager
+        size_hint: 1, 0.8
+        pos_hint: {'center_x': 0.5, 'top': 0.92}
+        HomeScreen
+        MediaScreen
+        PhoneScreen
     StatusBar:
         size_hint: 1, 0.08
         pos_hint: {'center_x': 0.5, 'top': 1}
     ControlBar:
+        id: control_bar
         size_hint: 1, 0.12
         pos_hint: {'center_x': 0.5, 'top': 0.12}
 
@@ -93,9 +98,46 @@
             # self here refers to the widget i.e BoxLayout
             pos: self.pos[0], self.pos[1]+self.height
             size: self.width, self.height/80
+    BoxLayout:
+        orientation: "horizontal"
+        size: self.parent.width, self.parent.height
+        LabelButton:
+            id: home_screen_btn
+            markup: True
+            text: "%s"%(icon('fa-home'))
+            font_size: 25
+            on_release: control_bar.switch_screen(self)
+        LabelButton:
+            id: media_screen_btn
+            markup: True
+            text: "%s"%(icon('fa-music'))
+            font_size: 25
+            color: utils.get_color_from_hex('444444FF')
+            on_release: control_bar.switch_screen(self)
+        LabelButton:
+            id: radio_screen_btn
+            markup: True
+            text: "%s"%(icon('fa-broadcast-tower'))
+            font_size: 25
+            color: utils.get_color_from_hex('444444FF')
+#            on_release: control_bar.switch_screen(self)
+        LabelButton:
+            id: phone_screen_btn
+            markup: True
+            text: "%s"%(icon('fa-phone'))
+            font_size: 25
+            color: utils.get_color_from_hex('444444FF')
+            on_release: control_bar.switch_screen(self)
+        LabelButton:
+            id: settingsScreen_btn
+            markup: True
+            text: "%s"%(icon('fa-cog'))
+            font_size: 25
+            color: utils.get_color_from_hex('444444FF')
+#            on_release: status_bar.volume_clicked()
 
 <HomeScreen>:
-    name: 'homeScreen'
+    name: 'home_screen'
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -168,3 +210,125 @@
             pos: self.pos
             size: self.size
             radius: [20,]
+
+<MediaScreen>:
+    name: 'media_screen'
+    id: media_screen
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id: title
+            text: ''
+            font_size: 30
+        Label:
+            id: artist
+            text: ''
+            font_size: 30
+        ProgressBar:
+            id: progress
+            width: root.width - 180
+        Label:
+            id: elapsed
+            test: ''
+            font_size: 15
+        BoxLayout:
+            orientation: 'horizontal'
+            LabelButton:
+                id: previous_btn
+                markup: True
+                text: "%s"%(icon('fa-backward'))
+                font_size: 25
+                on_release: media_screen.on_previous()
+            LabelButton:
+                id: play_btn
+                markup: True
+                text: "%s"%(icon('fa-play'))
+                font_size: 25
+                on_release: media_screen.on_play()
+            LabelButton:
+                id: next_btn
+                markup: True
+                text: "%s"%(icon('fa-forward'))
+                font_size: 25
+                on_release: media_screen.on_next()
+
+<PhoneScreen>:
+    name: 'phone_screen'
+    id: phone_screen
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id: phone_status
+            text: 'Aucun appel en cours'
+        TextInput:
+            id: phone_number
+            size_hint: 0.6, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.6, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            Button:
+                id: digit_7
+                text: '7'
+            Button:
+                id: digit_8
+                text: '8'
+            Button:
+                id: digit_9
+                text: '9'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.6, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            Button:
+                id: digit_4
+                text: '4'
+            Button:
+                id: digit_5
+                text: '5'
+            Button:
+                id: digit_6
+                text: '6'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.6, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            Button:
+                id: digit_1
+                text: '1'
+            Button:
+                id: digit_2
+                text: '2'
+            Button:
+                id: digit_3
+                text: '3'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.6, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            Button:
+                id: digit_star
+                text: '*'
+            Button:
+                id: digit_0
+                text: '0'
+            Button:
+                id: digit_hash
+                text: '#'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 0.6, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            LabelButton:
+                id: dial_btn
+                markup: True
+                text: "%s"%(icon('fa-phone'))
+                font_size: 25
+#                color: utils.get_color_from_hex('D44444FF')
+                color: utils.get_color_from_hex('44D446FF')
+            LabelButton:
+                id: dial_btn
+                markup: True
+                text: "%s"%(icon('fa-backspace'))
+                font_size: 25
